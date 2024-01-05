@@ -1,0 +1,114 @@
+﻿@use 'variables' as *;
+
+body {
+  will-change: background-color;
+  background-color: $theme-primary-body-bg-color;
+  transition: background-color 0.2s ease-out;
+
+  &.secondary-theme {
+    background-color: $theme-secondary-body-bg-color;
+  }
+}
+
+svg {
+  max-width: 100%;
+}
+
+.title {
+  font-weight: 700;
+  color: $color-hero-is-dark;
+
+  @include renderTabletDevice {
+    font-size: 1.75em;
+  }
+
+  @include renderMobileDevice {
+    font-size: 1.5em;
+  }
+}
+
+code {
+  font-size: 87.5%;
+  border-radius: 3px;
+  background-color: $theme-secondary-code-bg-color;
+  color: $color-green-highlight;
+  padding: 0.25rem 0.5rem;
+}
+
+.view-wrapper {
+  min-height: 875px;
+  padding-top: $navbar-height;
+}
+
+.vue-svg {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.is-132x132 {
+  width: 132px;
+  height: 132px;
+}
+
+.subtitle {
+  font-size: 1.6em;
+  letter-spacing: 0.01em;
+  color: $color-hero-is-dark;
+
+  @include renderTabletDevice {
+    font-size: 1.35em;
+  }
+
+  @include renderMobileDevice {
+    font-size: 1.125em;
+  }
+}
+
+.is-horizontal-center {
+  align-items: center;
+  justify-content: center;
+}
+
+.notification-tile {
+  margin: 0 auto;
+  padding: 15rem 0 20rem !important;
+
+  .notification {
+    color: #fff;
+    text-align: center;
+    padding: 1.75rem .25rem;
+    box-shadow: 0 2px 15px 0 rgba(18,16,19,.2);
+
+    &.is-primary {
+      background-color: #3eaf7c;
+    }
+
+    &.is-danger {
+      background-color: #E93E60;
+    }
+
+    .title {
+      font-size: 2em;
+      margin-left: 0.85rem;
+    }
+
+    .subtitle {
+      font-size: 1.6em;
+      margin-top: 0.5rem;
+    }
+
+    @include renderMobileDevice {
+      svg {
+        vertical-align: -0.225em;
+      }
+
+      .title {
+        font-size: 1.5em;
+      }
+
+      .subtitle {
+        font-size: 1.05em;
+      }
+    }
+  }
+}
