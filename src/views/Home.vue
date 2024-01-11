@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { useMetaRoute, useSharedTheme } from '@/composables';
+import "leaflet/dist/leaflet.css";
 import { FEATURES, PACKAGES, LOREM_IPSUM_TEXT } from '@/config';
-
+import { LMap, LTileLayer, LWmsTileLayer, LMarker, LTooltip, LControl } from "@vue-leaflet/vue-leaflet";
 import { Bar } from 'vue-chartjs';
 import { Line } from 'vue-chartjs';
 import {
@@ -20,6 +21,8 @@ ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale,
 
 useMetaRoute();
 const { themeCls } = useSharedTheme();
+let awesome = false;
+
 </script>
 
 <style>
@@ -107,6 +110,107 @@ table, th, td {
         </div>
 
         <div class="column">
+          <p class="title">Τιμές</p>
+          <div style="height:300px; width:400px">
+            <l-map ref="map" zoom="6" v-model:zoom="zoom" :center="[38.27, 23.81]">
+              <l-wms-tile-layer
+                url="https://maps.heigit.org/osm-wms/service"
+                attribution="HeiGIT <a href='osm-wms.de'>OSM WMS</a>"
+                layer-type="base"
+                name="osm-wms.de"
+                :max-zoom="10"
+                version="1.3.0"
+                format="image/png"
+                :transparent="true"
+                layers="osm_auto:all"
+              />
+
+              <l-control
+                class="leaflet-control leaflet-demo-control"
+                position="bottomleft"
+              >Hello, Map!</l-control
+              >
+
+              <!--    alexandroupoli-->
+              <l-marker :lat-lng="[40.845718, 25.873962]">
+                <l-tooltip> <div v-if="awesome">Alexandroupoli: 0,21e/kg</div></l-tooltip>
+              </l-marker>
+
+              <!--    viotia-->
+              <l-marker :lat-lng="[38.33333, 23.0]">
+                <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
+              </l-marker>
+
+              <!--    drama-->
+              <l-marker :lat-lng="[41.1502, 24.1469]">
+                <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
+              </l-marker>
+              <!--    evros-->
+              <l-marker :lat-lng="[41.4330, 26.5500]">
+                <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
+              </l-marker>
+              <!--    grevena-->
+              <l-marker :lat-lng="[40.0838, 21.4273]">
+                <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
+              </l-marker>
+              <!--    ioannina-->
+              <l-marker :lat-lng="[39.6650, 20.8537]">
+                <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
+              </l-marker>
+              <!--    karditsa-->
+              <l-marker :lat-lng="[39.3640, 21.9214]">
+                <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
+              </l-marker>
+              <!--    kavala-->
+              <l-marker :lat-lng="[40.9376, 24.4129]">
+                <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
+              </l-marker>
+              <!--    kilkis-->
+              <l-marker :lat-lng="[40.9937, 22.8754]">
+                <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
+              </l-marker>
+              <!--    komitini-->
+              <l-marker :lat-lng="[41.1, 25.4167]">
+                <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
+              </l-marker>
+              <!--    kozani-->
+              <l-marker :lat-lng="[40.30, 21.7833]">
+                <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
+              </l-marker>
+              <!--    larisa-->
+              <l-marker :lat-lng="[39.6417, 22.4167]">
+                <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
+              </l-marker>
+              <!--    leivadia-->
+              <l-marker :lat-lng="[34.9491, 33.6275]">
+                <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
+              </l-marker>
+              <!--    MES-->
+              <l-marker :lat-lng="[38.3687, 21.4304]">
+                <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
+              </l-marker>
+              <!--    ORE-->
+              <l-marker :lat-lng="[41.5014, 26.5311]">
+                <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
+              </l-marker>
+              <!--    PYR-->
+              <l-marker :lat-lng="[37.6718, 21.4432]">
+                <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
+              </l-marker>
+              <!--    SER-->
+              <l-marker :lat-lng="[41.0864, 23.5484]">
+                <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
+              </l-marker>
+              <!--    THE-->
+              <l-marker :lat-lng="[40.6401, 22.9444]">
+                <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
+              </l-marker>
+            </l-map>
+            <button @click="awesome = !awesome">Toggle</button>
+          </div>
+        </div>
+
+        <div class="column">
           <p class="title">Τιμές Εξόδων</p>
           <div class="content">
             <table>
@@ -139,7 +243,7 @@ table, th, td {
       <hr>
       <div class="columns">
         <div class="column">
-          <p class="title">lorem ipsum</p>
+          <p class="title">Τιμή καλαμποκιού ιστορικό</p>
           <div class="content">{{ LOREM_IPSUM_TEXT }}</div>
 
           <div class="container">

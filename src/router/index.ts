@@ -1,4 +1,4 @@
-import { About, Services, Home, NotFound } from '@/views';
+import { About, Services, Home, Trends, NotFound } from '@/views';
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
 
 const DESC_SUFFIX = 'description - length <= 160 chars.';
@@ -32,6 +32,16 @@ const routes: RouteRecordRaw[] = [
       transition: 'fade',
       title: 'Υπηρεσίες',
       description: `Σχετικά με εμάς ${DESC_SUFFIX}`
+    },
+  },
+  {
+    path: '/trends',
+    name: 'Trends',
+    component: Trends,
+    meta: {
+      transition: 'fade',
+      title: 'Τάσεις',
+      description: `Πορεία τιμής βασικών δημητριακών ${DESC_SUFFIX}`
     },
   },
   {

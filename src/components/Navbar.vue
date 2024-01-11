@@ -24,20 +24,30 @@
           :to="{ name: 'Home' }"
           class="navbar-item"
         >
-          <span>Home</span>
+          <span>Αρχική</span>
         </RouterLink>
+
         <RouterLink
-          :to="{ name: 'About' }"
+          :to="{ name: 'Trends' }"
           class="navbar-item"
         >
-          <span>About</span>
+          <span>Τάσεις</span>
         </RouterLink>
+
         <RouterLink
           :to="{ name: 'Services' }"
           class="navbar-item"
         >
           <span>Υπηρεσίες</span>
         </RouterLink>
+
+        <RouterLink
+          :to="{ name: 'About' }"
+          class="navbar-item"
+        >
+          <span>Σχετικά</span>
+        </RouterLink>
+
         <div class="seperator" />
 
         <div class="social-btn">

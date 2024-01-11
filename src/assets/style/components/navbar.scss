@@ -10,6 +10,25 @@
   padding-right: 11rem;
   box-shadow: 0 4px 6px 0 rgb(0 0 0 / 5%);
 
+  // ribbon beta
+  :before{
+    content: "beta";
+    position: fixed;
+    width: 80px;
+    height: 25px;
+    background: #EE8E4A;
+    top: 7px;
+    left: -20px;
+    text-align: center;
+    font-size: 13px;
+    font-family: sans-serif;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #fff;
+    line-height: 27px;
+    transform:rotate(-45deg);
+  }
+
   @include reduceNavBarPadding {
     padding-left: 7rem;
     padding-right: 7rem;
