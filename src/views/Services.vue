@@ -1,7 +1,5 @@
 <script setup lang="ts">
-  import { Alert } from '@/components';
   import { useMetaRoute } from '@/composables';
-  import {ABOUT_TEXT, FEATURES} from "@/config";
   import {SERVICES} from "@/config/servives.config";
 
   useMetaRoute();

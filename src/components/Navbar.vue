@@ -53,6 +53,7 @@
         <div class="social-btn">
           <a target="_blank" href="https://facebook.com/dimitriaka.gr"><font-awesome-icon :icon="['fab', 'facebook']" style="color:white; margin: 0 5px"/></a>
           <a target="_blank" href="https://instagram.com/dimitriaka.gr"><font-awesome-icon :icon="['fab', 'instagram']" style="color:white ; margin: 0 5px"/></a>
+          <a target="_blank" href="https://tiktok.com/@dimitriaka.gr"><font-awesome-icon :icon="['fab', 'tiktok']" style="color:white ; margin: 0 5px"/></a>
         </div>
 
         <div class="navbar-theme-toggle">

@@ -16,12 +16,15 @@ import {
   PointElement,
   LineElement
 } from 'chart.js';
+import {ref} from "vue";
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement);
 
 useMetaRoute();
 const { themeCls } = useSharedTheme();
-let awesome = false;
+const awesome = ref;
+const selected = ref('');
+const selectedHistorical = ref('');
 
 </script>
 
@@ -112,7 +115,7 @@ table, th, td {
         <div class="column">
           <p class="title">Τιμές</p>
           <div style="height:300px; width:400px">
-            <l-map ref="map" zoom="6" v-model:zoom="zoom" :center="[38.27, 23.81]">
+            <l-map ref="map" zoom="6" v-model:zoom="zoom" :center="[39.27, 23.81]">
               <l-wms-tile-layer
                 url="https://maps.heigit.org/osm-wms/service"
                 attribution="HeiGIT <a href='osm-wms.de'>OSM WMS</a>"
@@ -128,12 +131,15 @@ table, th, td {
               <l-control
                 class="leaflet-control leaflet-demo-control"
                 position="bottomleft"
-              >Hello, Map!</l-control
-              >
+              >Hello, Map!</l-control>
 
               <!--    alexandroupoli-->
               <l-marker :lat-lng="[40.845718, 25.873962]">
-                <l-tooltip> <div v-if="awesome">Alexandroupoli: 0,21e/kg</div></l-tooltip>
+                <l-tooltip>
+                  <div v-if="selected==='Καλαμπόκι'">Alexandroupoli: 0,21e/kg</div>
+                  <div v-if="selected==='Σιτάρι σκληρό'">Alexandroupoli: 0,42e/kg</div>
+                  <div v-if="selected==='Σιτάρι μαλακό'">Alexandroupoli: 0,50e/kg</div>
+                </l-tooltip>
               </l-marker>
 
               <!--    viotia-->
@@ -206,7 +212,14 @@ table, th, td {
                 <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
               </l-marker>
             </l-map>
-            <button @click="awesome = !awesome">Toggle</button>
+            <div>Selected: {{ selected }}</div>
+
+            <select v-model="selected">
+              <option disabled value="">Επιλέξτε σπόρο:</option>
+              <option>Καλαμπόκι</option>
+              <option>Σιτάρι σκληρό</option>
+              <option>Σιτάρι μαλακό</option>
+            </select>
           </div>
         </div>
 
@@ -246,14 +259,33 @@ table, th, td {
           <p class="title">Τιμή καλαμποκιού ιστορικό</p>
           <div class="content">{{ LOREM_IPSUM_TEXT }}</div>
 
+          <div>Selected: {{ selectedHistorical }}</div>
+
+          <select v-model="selectedHistorical">
+            <option disabled value="">Επιλέξτε σπόρο:</option>
+            <option>Καλαμπόκι</option>
+            <option>Σιτάρι σκληρό</option>
+            <option>Σιτάρι μαλακό</option>
+          </select>
           <div class="container">
             <Line id="my-chart-id" :data="{labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
       datasets: [
         {
-          label: 'Data One',
+          label: 'Καλαμπόκι',
           backgroundColor: '#f87979',
           data: [0.19, 0.22, 0.3, 0.21, 0.2, 0.13, 0.23]
+        },
+        {
+          label: 'Σιτάρι σκληρό',
+          backgroundColor: '#f87979',
+          data: [0.38, 0.35, 0.41, 0.37, 0.36, 0.33, 0.38]
+        },
+        {
+          label: 'Σιτάρι μαλακό',
+          backgroundColor: '#bd5c5c',
+          data: [0.19, 0.22, 0.2, 0.21, 0.2, 0.19, 0.18]
         }
+
       ]}" />
           </div>
         </div>

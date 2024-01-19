@@ -34,6 +34,15 @@
           >
             <font-awesome-icon :icon="['fab', 'instagram']" />
           </a>
+          <a
+            target="_blank"
+            aria-label="Medium"
+            class="button is-medium"
+            rel="noopener noreferrer"
+            href="https://tiktok.com/@dimitriaka.gr"
+          >
+            <font-awesome-icon :icon="['fab', 'tiktok']" />
+          </a>
         </div>
       </div>
 

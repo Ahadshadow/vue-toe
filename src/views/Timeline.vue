@@ -5,12 +5,14 @@ interface Props {
   title: string
   description: string
   year: string
+  date: string
 }
 
 withDefaults(defineProps<Props>(), {
   title: 'sample title',
   description: 'sample description',
-  year: '2019'
+  year: '2019',
+  date: '13'
 });
 </script>
 
@@ -28,6 +30,7 @@ withDefaults(defineProps<Props>(), {
           :title="title"
           :description="description"
           :year="year"
+          :date="date"
         />
       </div>
     </div>
