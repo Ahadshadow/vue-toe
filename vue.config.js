@@ -14,7 +14,12 @@ module.exports = defineConfig({
     // host: 'http://localhost', // option B
     port: "3000", // option C - recommended
     hot: true,
+    // allowedHosts: 'all'
+    // proxy : "https://www.ec.europa.eu/agrifood/"
+
   },
+
+
 
   // https://github.com/vuejs/core/tree/main/packages/vue#bundler-build-feature-flags
   // Setting compiler flag __VUE_OPTIONS_API__ to false reduces bundle size

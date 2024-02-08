@@ -26,6 +26,9 @@ const awesome = ref;
 const selected = ref('');
 const selectedHistorical = ref('');
 
+const products = ref('');
+const errorMessage = ref(null);
+
 </script>
 
 <style>
@@ -115,7 +118,7 @@ table, th, td {
         <div class="column">
           <p class="title">Τιμές</p>
           <div style="height:300px; width:400px">
-            <l-map ref="map" zoom="6" v-model:zoom="zoom" :center="[39.27, 23.81]">
+            <l-map ref="map" zoom=6 v-model:zoom="zoom" :center="[39.27, 23.81]">
               <l-wms-tile-layer
                 url="https://maps.heigit.org/osm-wms/service"
                 attribution="HeiGIT <a href='osm-wms.de'>OSM WMS</a>"
@@ -268,6 +271,12 @@ table, th, td {
             <option>Σιτάρι μαλακό</option>
           </select>
           <div class="container">
+            <div v-if="products">
+              <h5>Products</h5>{{console.log(products)}}
+              <ul class="mb-0">
+                <li v-for="product in products" :key="product.id">{{product.toString()}}</li>
+              </ul>
+            </div>
             <Line id="my-chart-id" :data="{labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
       datasets: [
         {
