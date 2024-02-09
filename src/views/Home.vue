@@ -1,10 +1,17 @@
 <script setup lang="ts">
-import { useMetaRoute, useSharedTheme } from '@/composables';
+import { useMetaRoute, useSharedTheme } from "@/composables";
 import "leaflet/dist/leaflet.css";
-import { FEATURES, PACKAGES, LOREM_IPSUM_TEXT } from '@/config';
-import { LMap, LTileLayer, LWmsTileLayer, LMarker, LTooltip, LControl } from "@vue-leaflet/vue-leaflet";
-import { Bar } from 'vue-chartjs';
-import { Line } from 'vue-chartjs';
+import { FEATURES, PACKAGES, LOREM_IPSUM_TEXT } from "@/config";
+import {
+  LMap,
+  LTileLayer,
+  LWmsTileLayer,
+  LMarker,
+  LTooltip,
+  LControl,
+} from "@vue-leaflet/vue-leaflet";
+import { Bar } from "vue-chartjs";
+import { Line } from "vue-chartjs";
 import {
   Chart as ChartJS,
   Title,
@@ -14,26 +21,49 @@ import {
   CategoryScale,
   LinearScale,
   PointElement,
-  LineElement
-} from 'chart.js';
-import {ref} from "vue";
+  LineElement,
+} from "chart.js";
+import { onMounted, ref } from "vue";
+import api from "@/api/axiosInstance";
 
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement);
+ChartJS.register(
+  Title,
+  Tooltip,
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement
+);
 
 useMetaRoute();
 const { themeCls } = useSharedTheme();
 const awesome = ref;
-const selected = ref('');
-const selectedHistorical = ref('');
+const selected = ref("");
+const selectedHistorical = ref("");
 
-const products = ref('');
+const products = ref("");
 const errorMessage = ref(null);
 
+// Methods...
+async function getProductPrices() {
+  try {
+    const { data } = await api.get(
+      `api/prices?productCodes=${selected.value}&memberStateCodes=EL&marketCodes=ALEX, BOE, DRA, EVROSA, GRE, IOAN,KAR, KAV, KIL, KOM, KOZ, LAR, LEI , MES, ORE, PYR, SER, THE&beginDate=01/11/2023&endDate=19/01/2024`
+    );
+    products.value = data;
+  } catch (err) {
+    errorMessage.value = err.message;
+  }
+}
 </script>
 
 <style>
-table, th, td {
-  border:1px solid black;
+table,
+th,
+td {
+  border: 1px solid black;
 }
 </style>
 
@@ -48,13 +78,21 @@ table, th, td {
               <!--                class="vue-svg"-->
               <!--                :icon="['fab', 'vuejs']"-->
               <!--              />-->
-              <img style="border-radius: 80px;" src="../icons/dimitriaka.gr.png">
+              <img
+                style="border-radius: 80px"
+                src="../icons/dimitriaka.gr.png"
+              />
             </figure>
           </div>
           <h1 class="title">Ελληνικά Δημητριακά</h1>
 
-          <hr>
-          <h2 class="subtitle">Τακτική ενημέρωση για τις καλλιέργειες των δημητριακών (καλαμπόκι, σιτάρι, κριθάρι) αλλά και ελαιούχων σπόρων όπως ο ηλίανθος. Συνδεθείτε μαζί μας ώστε να μη χάνετε καμιά ενημέρωση που θα ωφελήσει εσάς και τις καλλιέργειές σας!🌽</h2>
+          <hr />
+          <h2 class="subtitle">
+            Τακτική ενημέρωση για τις καλλιέργειες των δημητριακών (καλαμπόκι,
+            σιτάρι, κριθάρι) αλλά και ελαιούχων σπόρων όπως ο ηλίανθος.
+            Συνδεθείτε μαζί μας ώστε να μη χάνετε καμιά ενημέρωση που θα
+            ωφελήσει εσάς και τις καλλιέργειές σας!🌽
+          </h2>
         </div>
       </div>
     </section>
@@ -63,14 +101,25 @@ table, th, td {
         <div class="column">
           <p class="title">Επικαιρότητα</p>
           <div class="content">
-            <div class="fb-page" data-href="https://www.facebook.com/dimitriaka.gr"
-                 data-tabs="timeline" data-width="" data-height=""
-                 data-small-header="false" data-adapt-container-width="false"
-                 data-hide-cover="false" data-show-facepile="true">
+            <div
+              class="fb-page"
+              data-href="https://www.facebook.com/dimitriaka.gr"
+              data-tabs="timeline"
+              data-width=""
+              data-height=""
+              data-small-header="false"
+              data-adapt-container-width="false"
+              data-hide-cover="false"
+              data-show-facepile="true"
+            >
               <blockquote
-              cite="https://www.facebook.com/dimitriaka.gr"
-              class="fb-xfbml-parse-ignore">
-              <a href="https://www.facebook.com/dimitriaka.gr">Ελληνικά Δημητριακά</a></blockquote>
+                cite="https://www.facebook.com/dimitriaka.gr"
+                class="fb-xfbml-parse-ignore"
+              >
+                <a href="https://www.facebook.com/dimitriaka.gr"
+                  >Ελληνικά Δημητριακά</a
+                >
+              </blockquote>
             </div>
           </div>
         </div>
@@ -117,8 +166,13 @@ table, th, td {
 
         <div class="column">
           <p class="title">Τιμές</p>
-          <div style="height:300px; width:400px">
-            <l-map ref="map" zoom=6 v-model:zoom="zoom" :center="[39.27, 23.81]">
+          <div style="height: 300px; width: 400px">
+            <l-map
+              ref="map"
+              zoom="6"
+              v-model:zoom="zoom"
+              :center="[39.27, 23.81]"
+            >
               <l-wms-tile-layer
                 url="https://maps.heigit.org/osm-wms/service"
                 attribution="HeiGIT <a href='osm-wms.de'>OSM WMS</a>"
@@ -134,14 +188,21 @@ table, th, td {
               <l-control
                 class="leaflet-control leaflet-demo-control"
                 position="bottomleft"
-              >Hello, Map!</l-control>
+                >Hello, Map!</l-control
+              >
 
               <!--    alexandroupoli-->
               <l-marker :lat-lng="[40.845718, 25.873962]">
                 <l-tooltip>
-                  <div v-if="selected==='Καλαμπόκι'">Alexandroupoli: 0,21e/kg</div>
-                  <div v-if="selected==='Σιτάρι σκληρό'">Alexandroupoli: 0,42e/kg</div>
-                  <div v-if="selected==='Σιτάρι μαλακό'">Alexandroupoli: 0,50e/kg</div>
+                  <div v-if="selected === 'Καλαμπόκι'">
+                    Alexandroupoli: 0,21e/kg
+                  </div>
+                  <div v-if="selected === 'Σιτάρι σκληρό'">
+                    Alexandroupoli: 0,42e/kg
+                  </div>
+                  <div v-if="selected === 'Σιτάρι μαλακό'">
+                    Alexandroupoli: 0,50e/kg
+                  </div>
                 </l-tooltip>
               </l-marker>
 
@@ -155,7 +216,7 @@ table, th, td {
                 <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
               </l-marker>
               <!--    evros-->
-              <l-marker :lat-lng="[41.4330, 26.5500]">
+              <l-marker :lat-lng="[41.433, 26.55]">
                 <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
               </l-marker>
               <!--    grevena-->
@@ -163,11 +224,11 @@ table, th, td {
                 <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
               </l-marker>
               <!--    ioannina-->
-              <l-marker :lat-lng="[39.6650, 20.8537]">
+              <l-marker :lat-lng="[39.665, 20.8537]">
                 <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
               </l-marker>
               <!--    karditsa-->
-              <l-marker :lat-lng="[39.3640, 21.9214]">
+              <l-marker :lat-lng="[39.364, 21.9214]">
                 <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
               </l-marker>
               <!--    kavala-->
@@ -183,7 +244,7 @@ table, th, td {
                 <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
               </l-marker>
               <!--    kozani-->
-              <l-marker :lat-lng="[40.30, 21.7833]">
+              <l-marker :lat-lng="[40.3, 21.7833]">
                 <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
               </l-marker>
               <!--    larisa-->
@@ -217,11 +278,11 @@ table, th, td {
             </l-map>
             <div>Selected: {{ selected }}</div>
 
-            <select v-model="selected">
+            <select v-model="selected" @change.prevent="getProductPrices">
               <option disabled value="">Επιλέξτε σπόρο:</option>
-              <option>Καλαμπόκι</option>
-              <option>Σιτάρι σκληρό</option>
-              <option>Σιτάρι μαλακό</option>
+              <option value="MAI">Καλαμπόκι</option>
+              <option value="DUR1">Σιτάρι σκληρό</option>
+              <option value="DUR">Σιτάρι μαλακό</option>
             </select>
           </div>
         </div>
@@ -253,10 +314,9 @@ table, th, td {
             </table>
           </div>
         </div>
-
       </div>
 
-      <hr>
+      <hr />
       <div class="columns">
         <div class="column">
           <p class="title">Τιμή καλαμποκιού ιστορικό</p>
@@ -272,30 +332,46 @@ table, th, td {
           </select>
           <div class="container">
             <div v-if="products">
-              <h5>Products</h5>{{console.log(products)}}
+              <h5 class="mt-3">Products</h5>
               <ul class="mb-0">
-                <li v-for="product in products" :key="product.id">{{product.toString()}}</li>
+                <li v-for="product in products" :key="product.memberStateCode">
+                  {{ product.productName.toString() }} --
+                  {{ product.stageName.toString() }} --
+                  {{ product.price.toString() }}
+                </li>
               </ul>
             </div>
-            <Line id="my-chart-id" :data="{labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-      datasets: [
-        {
-          label: 'Καλαμπόκι',
-          backgroundColor: '#f87979',
-          data: [0.19, 0.22, 0.3, 0.21, 0.2, 0.13, 0.23]
-        },
-        {
-          label: 'Σιτάρι σκληρό',
-          backgroundColor: '#f87979',
-          data: [0.38, 0.35, 0.41, 0.37, 0.36, 0.33, 0.38]
-        },
-        {
-          label: 'Σιτάρι μαλακό',
-          backgroundColor: '#bd5c5c',
-          data: [0.19, 0.22, 0.2, 0.21, 0.2, 0.19, 0.18]
-        }
-
-      ]}" />
+            <Line
+              id="my-chart-id"
+              :data="{
+                labels: [
+                  'January',
+                  'February',
+                  'March',
+                  'April',
+                  'May',
+                  'June',
+                  'July',
+                ],
+                datasets: [
+                  {
+                    label: 'Καλαμπόκι',
+                    backgroundColor: '#f87979',
+                    data: [0.19, 0.22, 0.3, 0.21, 0.2, 0.13, 0.23],
+                  },
+                  {
+                    label: 'Σιτάρι σκληρό',
+                    backgroundColor: '#f87979',
+                    data: [0.38, 0.35, 0.41, 0.37, 0.36, 0.33, 0.38],
+                  },
+                  {
+                    label: 'Σιτάρι μαλακό',
+                    backgroundColor: '#bd5c5c',
+                    data: [0.19, 0.22, 0.2, 0.21, 0.2, 0.19, 0.18],
+                  },
+                ],
+              }"
+            />
           </div>
         </div>
       </div>

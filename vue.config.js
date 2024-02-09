@@ -16,23 +16,27 @@ module.exports = defineConfig({
     hot: true,
     // allowedHosts: 'all'
     // proxy : "https://www.ec.europa.eu/agrifood/"
-
+    // proxy: {
+    //   "/api": {
+    //     target: "https://www.ec.europa.eu/agrifood/api/",
+    //     changeOrigin: true,
+    //     pathRewrite: {
+    //       "^/api": "",
+    //     },
+    //   },
+    // },
   },
-
-
 
   // https://github.com/vuejs/core/tree/main/packages/vue#bundler-build-feature-flags
   // Setting compiler flag __VUE_OPTIONS_API__ to false reduces bundle size
   chainWebpack: (config) => {
-    config
-      .plugin("feature-flags")
-      .tap((args) => {
-        const disable = JSON.stringify(false);
-        args[0].__VUE_OPTIONS_API__ = disable;
-        args[0].__VUE_PROD_DEVTOOLS__ = disable;
+    config.plugin("feature-flags").tap((args) => {
+      const disable = JSON.stringify(false);
+      args[0].__VUE_OPTIONS_API__ = disable;
+      args[0].__VUE_PROD_DEVTOOLS__ = disable;
 
-        return args;
-      });
+      return args;
+    });
   },
 
   // https://cli.vuejs.org/guide/webpack.html
