@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMetaRoute, useSharedTheme } from "@/composables";
+import { fetchGraphData, useMetaRoute, useSharedTheme } from "@/composables";
 import "leaflet/dist/leaflet.css";
 import { FEATURES, PACKAGES, LOREM_IPSUM_TEXT } from "@/config";
 import {
@@ -25,6 +25,7 @@ import {
 } from "chart.js";
 import { onMounted, ref } from "vue";
 import api from "@/api/axiosInstance";
+import { fetchMapData } from "@/api/services/getMapData";
 
 ChartJS.register(
   Title,
@@ -57,6 +58,31 @@ async function getProductPrices() {
     errorMessage.value = err.message;
   }
 }
+const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // Use the cors-anywhere proxy server
+
+async function getMapData() {
+  try {
+    const data = await api.get(
+      "https://ec.europa.eu/agrifood/api/cereal/prices?productCodes=DUR&memberStateCodes=EL&marketCodes=ALEX,%20BOE,%20DRA,%20EVROSA,%20GRE,%20IOAN,KAR,%20KAV,%20KIL,%20KOM,%20KOZ,%20LAR,%20LEI%20,%20MES,%20ORE,%20PYR,%20SER,%20THE&beginDate=06/10/2023&endDate=10/04/2024",
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+        proxy: {
+          host: "104.236.174.88",
+          port: 3128,
+        },
+      }
+    );
+    console.log("data", data);
+  } catch (err) {
+    errorMessage.value = err.message;
+  }
+}
+
+onMounted(() => {
+  getMapData();
+});
 </script>
 
 <style>

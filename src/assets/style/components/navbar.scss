@@ -1,22 +1,27 @@
-﻿@use '../base/variables' as *;
+﻿@use "../base/variables" as *;
+
+.navbar-container {
+  position: fixed;
+  z-index: 30;
+}
 
 .navbar {
   width: 100%;
-  position: fixed;
-  z-index: 30;
   height: $navbar-height;
   background-color: $color-nav-bar;
   padding-left: 11rem;
   padding-right: 11rem;
   box-shadow: 0 4px 6px 0 rgb(0 0 0 / 5%);
+  position: fixed;
+  z-index: 30;
 
   // ribbon beta
-  :before{
+  :before {
     content: "beta";
     position: fixed;
     width: 80px;
     height: 25px;
-    background: #EE8E4A;
+    background: #ee8e4a;
     top: 7px;
     left: -20px;
     text-align: center;
@@ -26,7 +31,7 @@
     font-weight: bold;
     color: #fff;
     line-height: 27px;
-    transform:rotate(-45deg);
+    transform: rotate(-45deg);
   }
 
   @include reduceNavBarPadding {
@@ -48,7 +53,6 @@
     margin: auto;
     display: flex;
     height: 100%;
-
 
     .brand-wrapper {
       display: flex;
@@ -74,10 +78,10 @@
 
       > .seperator {
         width: 1.5px;
-        margin: .95rem 1.25rem;
+        margin: 0.95rem 1.25rem;
         align-self: stretch;
         box-sizing: border-box;
-        background-color: rgba(255,255,255,0.13);
+        background-color: rgba(255, 255, 255, 0.13);
       }
 
       > .navbar-item {
@@ -105,7 +109,7 @@
 
         &.is-active {
           background-color: transparent;
-          color: $color-green-highlight!important;
+          color: $color-green-highlight !important;
           border-bottom-color: $color-green-highlight !important;
         }
 
@@ -115,8 +119,8 @@
 
         svg {
           font-size: 0.75em;
-          margin: .063rem 0 0 .55rem;
-          color: rgba(255,255,255,.5);
+          margin: 0.063rem 0 0 0.55rem;
+          color: rgba(255, 255, 255, 0.5);
           transition: color 0.2s ease-out;
         }
 

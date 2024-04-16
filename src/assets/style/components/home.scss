@@ -1,9 +1,10 @@
-﻿@use '../base/variables' as *;
+﻿@use "../base/variables" as *;
 
 .hero.is-dark {
   background-color: $color-hero-is-dark;
 
   .hero-body {
+    margin-top: 30px;
     padding: 1.25rem 1.5rem 2.5rem;
 
     svg {
@@ -11,7 +12,7 @@
     }
 
     hr {
-      background-color: rgba(255,255,255,0.13);
+      background-color: rgba(255, 255, 255, 0.13);
       height: 1.5px;
       margin: 0 auto 1.55rem auto;
       width: 65%;
@@ -77,7 +78,7 @@
 
   hr {
     transition: background-color 0.2s ease-out;
-    background-color: hsla(0,100%,0%,.11);
+    background-color: hsla(0, 100%, 0%, 0.11);
     margin: 0.75rem 0;
     height: 1.5px;
   }
