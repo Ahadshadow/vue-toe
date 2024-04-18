@@ -25,7 +25,7 @@ import {
 } from "chart.js";
 import { onMounted, ref } from "vue";
 import api from "@/api/axiosInstance";
-import { fetchMapData } from "@/api/services/getMapData";
+import _ from "lodash";
 
 ChartJS.register(
   Title,
@@ -45,7 +45,137 @@ const selected = ref("");
 const selectedHistorical = ref("");
 
 const products = ref("");
+const MapData = ref<any>({});
 const errorMessage = ref(null);
+
+const cityDataInitial = [
+  {
+    city: "ALEX",
+    full_name: "Alexandroupoli",
+    adjacentCities: ["EVROSA", "KOM", "ORE"],
+    coords: [40.845718, 25.873962],
+    adjacentCityFullNames: ["Evros", "Komotini", "Orestiada"],
+  },
+  {
+    city: "BOE",
+    full_name: "Viotia",
+    adjacentCities: ["LEI", "MES", "PYR"],
+    coords: [38.33333, 23.0],
+    adjacentCityFullNames: ["Leivadia", "Mesolongi", "Pyrgos"],
+  },
+  {
+    city: "DRA",
+    full_name: "Drama",
+    adjacentCities: ["KAV", "THE", "SER"],
+    coords: [41.1502, 24.1469],
+    adjacentCityFullNames: ["Kavala", "Thessaloniki", "Serres"],
+  },
+  {
+    city: "EVROSA",
+    full_name: "Evros",
+    adjacentCities: ["ALEX", "KOM", "ORE"],
+    coords: [41.433, 26.55],
+    adjacentCityFullNames: ["Alexandroupoli", "Komotini", "Orestiada"],
+  },
+  {
+    city: "GRE",
+    full_name: "Grevena",
+    adjacentCities: ["KOZ", "LAR", "IOAN"],
+    coords: [40.0838, 21.4273],
+    adjacentCityFullNames: ["Kozani", "Larisa", "Ioannina"],
+  },
+  {
+    city: "IOAN",
+    full_name: "Ioannina",
+    adjacentCities: ["GRE", "KOZ", "LAR"],
+    coords: [39.665, 20.8537],
+    adjacentCityFullNames: ["Grevena", "Kozani", "Larisa"],
+  },
+  {
+    city: "KAR",
+    full_name: "Karditsa",
+    adjacentCities: ["KOZ", "LAR", "GRE"],
+    coords: [39.364, 21.9214],
+    adjacentCityFullNames: ["Kozani", "Larisa", "Grevena"],
+  },
+  {
+    city: "KAV",
+    full_name: "Kavala",
+    adjacentCities: ["DRA", "SER", "THE"],
+    coords: [40.9376, 24.4129],
+    adjacentCityFullNames: ["Drama", "Serres", "Thessaloniki"],
+  },
+  {
+    city: "KIL",
+    full_name: "Kilkis",
+    adjacentCities: ["THE", "SER", "KOZ"],
+    coords: [40.9937, 22.8754],
+    adjacentCityFullNames: ["Thessaloniki", "Serres", "Kozani"],
+  },
+  {
+    city: "KOM",
+    full_name: "Komotini",
+    adjacentCities: ["ORE", "ALEX", "EVROSA"],
+    coords: [41.1, 25.4167],
+    adjacentCityFullNames: ["Orestiada", "Alexandroupoli", "Evros"],
+  },
+  {
+    city: "KOZ",
+    full_name: "Kozani",
+    adjacentCities: ["LAR", "GRE", "THE"],
+    coords: [40.3, 21.7833],
+    adjacentCityFullNames: ["Larisa", "Grevena", "Thessaloniki"],
+  },
+  {
+    city: "LAR",
+    full_name: "Larisa",
+    adjacentCities: ["GRE", "KOZ", "IOAN"],
+    coords: [39.6417, 22.4167],
+    adjacentCityFullNames: ["Grevena", "Kozani", "Ioannina"],
+  },
+  {
+    city: "LEI",
+    full_name: "Leivadia",
+    adjacentCities: ["BOE", "PYR", "MES"],
+    coords: [34.9491, 33.6275],
+    adjacentCityFullNames: ["Viotia", "Pyrgos", "Mesolongi"],
+  },
+  {
+    city: "MES",
+    full_name: "Mesolongi",
+    adjacentCities: ["BOE", "PYR", "LEI"],
+    coords: [38.3687, 21.4304],
+    adjacentCityFullNames: ["Viotia", "Pyrgos", "Leivadia"],
+  },
+  {
+    city: "ORE",
+    full_name: "Orestiada",
+    adjacentCities: ["EVROSA", "ALEX", "KOM"],
+    coords: [41.5014, 26.5311],
+    adjacentCityFullNames: ["Evros", "Alexandroupoli", "Komotini"],
+  },
+  {
+    city: "PYR",
+    full_name: "Pyrgos",
+    adjacentCities: ["MES", "BOE", "LEI"],
+    coords: [37.6718, 21.4432],
+    adjacentCityFullNames: ["Mesolongi", "Viotia", "Leivadia"],
+  },
+  {
+    city: "SER",
+    full_name: "Serres",
+    adjacentCities: ["KIL", "THE", "KAV"],
+    coords: [41.0864, 23.5484],
+    adjacentCityFullNames: ["Kilkis", "Thessaloniki", "Kavala"],
+  },
+  {
+    city: "THE",
+    full_name: "Thessaloniki",
+    adjacentCities: ["KAV", "KIL", "KOZ"],
+    coords: [40.6401, 22.9444],
+    adjacentCityFullNames: ["Kavala", "Kilkis", "Kozani"],
+  },
+];
 
 // Methods...
 async function getProductPrices() {
@@ -58,27 +188,83 @@ async function getProductPrices() {
     errorMessage.value = err.message;
   }
 }
-const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // Use the cors-anywhere proxy server
 
 async function getMapData() {
   try {
-    const data = await api.get(
-      "https://ec.europa.eu/agrifood/api/cereal/prices?productCodes=DUR&memberStateCodes=EL&marketCodes=ALEX,%20BOE,%20DRA,%20EVROSA,%20GRE,%20IOAN,KAR,%20KAV,%20KIL,%20KOM,%20KOZ,%20LAR,%20LEI%20,%20MES,%20ORE,%20PYR,%20SER,%20THE&beginDate=06/10/2023&endDate=10/04/2024",
-      {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
-        proxy: {
-          host: "104.236.174.88",
-          port: 3128,
-        },
-      }
+    const data = await api.get("/map-data", {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
+
+    const apiData: any = data.data; // Fill this with your API data
+
+    const marketData = _.groupBy(apiData, (item) =>
+      item.marketName.toLowerCase()
     );
-    console.log("data", data);
+
+    const latestMarketData: any = _.mapValues(marketData, (market: any) =>
+      _.maxBy(market, "endDate")
+    );
+
+    const cityData: any = cityDataInitial; // Fill this with your city data
+
+    const cityToMarket: any = _.mapValues(
+      _.keyBy(cityData, "city"),
+      () => null
+    );
+
+    function findDataForCity(cityName: string): any | null {
+      const marketKey = cityName.toLowerCase();
+
+      if (latestMarketData[marketKey]) {
+        return latestMarketData[marketKey];
+      }
+      const adjacentCities = _.get(
+        _.find(cityData, { full_name: marketKey }),
+        "adjacentCityFullNames",
+        []
+      );
+      // console.log("adjacentCities", adjacentCities);
+
+      for (const adjacentCity of adjacentCities) {
+        const data = findDataForCity(adjacentCity);
+
+        if (data) {
+          return data;
+        }
+      }
+      return null; // If data not found for city or its adjacent cities
+    }
+
+    _.forEach(cityData, (city: any) => {
+      const marketData = findDataForCity(city.full_name);
+
+      if (marketData) {
+        cityToMarket[city.city] = {
+          ...city,
+          ...marketData,
+          price: marketData.price,
+          referencePeriod: marketData.referencePeriod,
+        };
+      } else {
+        // If no data found for city or its adjacent cities, set price to 0
+        cityToMarket[city.city] = {
+          ...city,
+          price: "€0,00",
+          referencePeriod: null,
+        };
+      }
+    });
+
+    MapData.value = Object.values(cityToMarket);
   } catch (err) {
     errorMessage.value = err.message;
   }
 }
+
+// const isLoading = ref(true);
+// const items = ref([]);
 
 onMounted(() => {
   getMapData();
@@ -217,89 +403,14 @@ td {
                 >Hello, Map!</l-control
               >
 
-              <!--    alexandroupoli-->
-              <l-marker :lat-lng="[40.845718, 25.873962]">
+              <l-marker
+                v-for="city in MapData"
+                :key="city?.city"
+                :lat-lng="city?.coords"
+              >
                 <l-tooltip>
-                  <div v-if="selected === 'Καλαμπόκι'">
-                    Alexandroupoli: 0,21e/kg
-                  </div>
-                  <div v-if="selected === 'Σιτάρι σκληρό'">
-                    Alexandroupoli: 0,42e/kg
-                  </div>
-                  <div v-if="selected === 'Σιτάρι μαλακό'">
-                    Alexandroupoli: 0,50e/kg
-                  </div>
+                  <div>{{ city.full_name }}: {{ city.price }}</div>
                 </l-tooltip>
-              </l-marker>
-
-              <!--    viotia-->
-              <l-marker :lat-lng="[38.33333, 23.0]">
-                <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
-              </l-marker>
-
-              <!--    drama-->
-              <l-marker :lat-lng="[41.1502, 24.1469]">
-                <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
-              </l-marker>
-              <!--    evros-->
-              <l-marker :lat-lng="[41.433, 26.55]">
-                <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
-              </l-marker>
-              <!--    grevena-->
-              <l-marker :lat-lng="[40.0838, 21.4273]">
-                <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
-              </l-marker>
-              <!--    ioannina-->
-              <l-marker :lat-lng="[39.665, 20.8537]">
-                <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
-              </l-marker>
-              <!--    karditsa-->
-              <l-marker :lat-lng="[39.364, 21.9214]">
-                <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
-              </l-marker>
-              <!--    kavala-->
-              <l-marker :lat-lng="[40.9376, 24.4129]">
-                <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
-              </l-marker>
-              <!--    kilkis-->
-              <l-marker :lat-lng="[40.9937, 22.8754]">
-                <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
-              </l-marker>
-              <!--    komitini-->
-              <l-marker :lat-lng="[41.1, 25.4167]">
-                <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
-              </l-marker>
-              <!--    kozani-->
-              <l-marker :lat-lng="[40.3, 21.7833]">
-                <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
-              </l-marker>
-              <!--    larisa-->
-              <l-marker :lat-lng="[39.6417, 22.4167]">
-                <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
-              </l-marker>
-              <!--    leivadia-->
-              <l-marker :lat-lng="[34.9491, 33.6275]">
-                <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
-              </l-marker>
-              <!--    MES-->
-              <l-marker :lat-lng="[38.3687, 21.4304]">
-                <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
-              </l-marker>
-              <!--    ORE-->
-              <l-marker :lat-lng="[41.5014, 26.5311]">
-                <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
-              </l-marker>
-              <!--    PYR-->
-              <l-marker :lat-lng="[37.6718, 21.4432]">
-                <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
-              </l-marker>
-              <!--    SER-->
-              <l-marker :lat-lng="[41.0864, 23.5484]">
-                <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
-              </l-marker>
-              <!--    THE-->
-              <l-marker :lat-lng="[40.6401, 22.9444]">
-                <l-tooltip> Hi! I'm staying here on this location! </l-tooltip>
               </l-marker>
             </l-map>
             <div>Selected: {{ selected }}</div>
