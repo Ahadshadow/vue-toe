@@ -24,8 +24,26 @@ app.get("/api/prices", async (req, res) => {
   }
 });
 
+app.get("/api/map-data", async (req, res) => {
+  try {
+    const data = await fetchMapData(req.query);
+    res.json(data);
+  } catch (error) {
+    res
+      .status(error.response ? error.response.status : 500)
+      .send(error.message || "Error fetching data");
+  }
+});
+
 // Methods
 const fetchProductPrices = async (queryParams) => {
+  const apiUrl = `https://www.ec.europa.eu/agrifood/api/cereal/prices`;
+  const { data } = await axios.get(apiUrl, {
+    params: queryParams,
+  });
+  return data;
+};
+const fetchMapData = async (queryParams) => {
   const apiUrl = `https://www.ec.europa.eu/agrifood/api/cereal/prices`;
   const { data } = await axios.get(apiUrl, {
     params: queryParams,

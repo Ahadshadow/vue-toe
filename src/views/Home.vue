@@ -26,6 +26,7 @@ import {
 import { onMounted, ref } from "vue";
 import api from "@/api/axiosInstance";
 import _ from "lodash";
+import moment from "moment";
 
 ChartJS.register(
   Title,
@@ -41,7 +42,7 @@ ChartJS.register(
 useMetaRoute();
 const { themeCls } = useSharedTheme();
 const awesome = ref;
-const selected = ref("");
+const selected = ref("MAI");
 const selectedHistorical = ref("");
 
 const products = ref("");
@@ -190,14 +191,15 @@ async function getProductPrices() {
 }
 
 async function getMapData() {
+  const endDate = moment().format("DD/MM/YYYY");
+  const startDate = moment().subtract(1, "years").format("DD/MM/YYYY");
   try {
-    const data = await api.get("/map-data", {
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      },
-    });
+    const { data } = await api.get(
+      `api/map-data?productCodes=${selected.value}&memberStateCodes=EL&marketCodes=ALEX, BOE, DRA, EVROSA, GRE, IOAN,KAR, KAV, KIL, KOM, KOZ, LAR, LEI , MES, ORE, PYR, SER, THE&beginDate=${startDate}&endDate=${endDate}`
+      // `api/map-data?products=Oilseed meals&memberStateCodes=EL&marketCodes=ALEX, BOE, DRA, EVROSA, GRE, IOAN,KAR, KAV, KIL, KOM, KOZ, LAR, LEI , MES, ORE, PYR, SER, THE&beginDate=${startDate}&endDate=${endDate}`
+    );
 
-    const apiData: any = data.data; // Fill this with your API data
+    const apiData: any = data;
 
     const marketData = _.groupBy(apiData, (item) =>
       item.marketName.toLowerCase()
@@ -207,7 +209,7 @@ async function getMapData() {
       _.maxBy(market, "endDate")
     );
 
-    const cityData: any = cityDataInitial; // Fill this with your city data
+    const cityData: any = cityDataInitial;
 
     const cityToMarket: any = _.mapValues(
       _.keyBy(cityData, "city"),
@@ -225,7 +227,6 @@ async function getMapData() {
         "adjacentCityFullNames",
         []
       );
-      // console.log("adjacentCities", adjacentCities);
 
       for (const adjacentCity of adjacentCities) {
         const data = findDataForCity(adjacentCity);
@@ -258,16 +259,20 @@ async function getMapData() {
     });
 
     MapData.value = Object.values(cityToMarket);
+
+    console.log("MapData", MapData.value);
   } catch (err) {
     errorMessage.value = err.message;
   }
 }
 
-// const isLoading = ref(true);
-// const items = ref([]);
+function getApiResponses() {
+  getMapData();
+  getProductPrices();
+}
 
 onMounted(() => {
-  getMapData();
+  getApiResponses();
 });
 </script>
 
@@ -415,7 +420,7 @@ td {
             </l-map>
             <div>Selected: {{ selected }}</div>
 
-            <select v-model="selected" @change.prevent="getProductPrices">
+            <select v-model="selected" @change.prevent="getApiResponses">
               <option disabled value="">Επιλέξτε σπόρο:</option>
               <option value="MAI">Καλαμπόκι</option>
               <option value="DUR1">Σιτάρι σκληρό</option>
