@@ -423,8 +423,8 @@ td {
             <select v-model="selected" @change.prevent="getApiResponses">
               <option disabled value="">Επιλέξτε σπόρο:</option>
               <option value="MAI">Καλαμπόκι</option>
-              <option value="DUR1">Σιτάρι σκληρό</option>
-              <option value="DUR">Σιτάρι μαλακό</option>
+              <option value="DUR">Σιτάρι σκληρό</option>
+              <option value="BLTFOUR">Σιτάρι μαλακό</option>
             </select>
           </div>
         </div>
