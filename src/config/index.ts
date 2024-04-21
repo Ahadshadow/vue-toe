@@ -1,8 +1,9 @@
-export * from './features.config';
-export * from './vue-meta.config';
-export * from './vue-gtag.config';
-export * from './vue-scrollto.config';
-export * from './packages.config';
+export * from "./features.config";
+export * from "./vue-meta.config";
+export * from "./vue-gtag.config";
+export * from "./vue-scrollto.config";
+export * from "./packages.config";
+export * from "./initialdata.config";
 
 export const LOREM_IPSUM_TEXT = `
   Lorem ipsum dolor sit amet, alia appareat usu id, has legere facilis in.
@@ -30,4 +31,3 @@ export const SERVICES_TEXT = `
 
 
 `;
-
