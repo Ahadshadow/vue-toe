@@ -76,12 +76,13 @@ async function getMapData() {
     );
     const apiData: any = data;
 
-    const marketData = _.groupBy(apiData, (item) =>
+    const marketData = _.groupBy(apiData, (item: any) =>
       item.marketName.toLowerCase()
     );
 
-    const latestMarketData: any = _.mapValues(marketData, (market: any) =>
-      _.maxBy(market, "endDate")
+    const latestMarketData: any = _.mapValues(
+      marketData,
+      (market: any) => market[0]
     );
 
     const cityData: any = cityDataInitial;
