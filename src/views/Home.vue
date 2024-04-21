@@ -340,50 +340,10 @@ td {
             </div>
           </div>
         </div>
-        <div class="column">
-          <p class="title">Τιμές</p>
-          <div class="content">
-            <table>
-              <tr>
-                <th>Σπόρος</th>
-                <th>Τιμή</th>
-                <th>Μεταβολή</th>
-              </tr>
-              <td>Καλαμπόκι</td>
-              <td>0,19</td>
-              <td>+1%</td>
-              <tr>
-                <td>Σιτάρι σκληρό</td>
-                <td>0,45</td>
-                <td>+0.01%</td>
-              </tr>
-              <tr>
-                <td>Σιτάρι μαλακό</td>
-                <td>0,45</td>
-                <td>+0.01%</td>
-              </tr>
-              <tr>
-                <td>Κριθάρι</td>
-                <td>0,45</td>
-                <td>+0.01%</td>
-              </tr>
-              <tr>
-                <td>Ηλίανθος</td>
-                <td>0,45</td>
-                <td>+0.01%</td>
-              </tr>
-              <tr>
-                <td>Βαμβάκι</td>
-                <td>0,45</td>
-                <td>+0.01%</td>
-              </tr>
-            </table>
-          </div>
-        </div>
 
-        <div class="column">
+        <div class="column mb-5">
           <p class="title">Τιμές</p>
-          <div style="height: 300px; width: 400px">
+          <div style="height: 300px; width: 100%">
             <l-map
               ref="map"
               zoom="6"
@@ -426,34 +386,6 @@ td {
               <option value="DUR">Σιτάρι σκληρό</option>
               <option value="BLTFOUR">Σιτάρι μαλακό</option>
             </select>
-          </div>
-        </div>
-
-        <div class="column">
-          <p class="title">Τιμές Εξόδων</p>
-          <div class="content">
-            <table>
-              <tr>
-                <th>Έξοδο</th>
-                <th>Τιμή</th>
-                <th>Μεταβολή</th>
-              </tr>
-              <tr>
-                <td>Ντίζελ</td>
-                <td>0,79</td>
-                <td>+0,12%</td>
-              </tr>
-              <tr>
-                <td>Λιπασμα</td>
-                <td>15,3</td>
-                <td>+1%</td>
-              </tr>
-              <tr>
-                <td>Ρεύμα άρδευσης</td>
-                <td>3,23</td>
-                <td>+0,05%</td>
-              </tr>
-            </table>
           </div>
         </div>
       </div>
