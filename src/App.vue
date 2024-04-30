@@ -1,37 +1,29 @@
 <script setup lang="ts">
-import { watch, unref, ref } from "vue";
+import { watch, unref, ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useGtag } from "vue-gtag-next";
 import { useSharedTheme } from "@/composables";
 import { useMeta, useActiveMeta } from "vue-meta";
-import { Navbar, AppFooter, BackToTop, TopStockBar } from "@/components";
+import {
+  Navbar,
+  AppFooter,
+  BackToTop,
+  TopStockBar,
+  AdminLayout,
+} from "@/components";
 
 const router = useRouter();
 const { pageview } = useGtag();
 const activeMeta = useActiveMeta();
 const { themeCls } = useSharedTheme();
 
-const stocks = ref([
-  { symbol: "ATRL", price: 399.98, change: "+5.16%" },
-  { symbol: "AVN", price: 60.6, change: "+0.24%" },
-  { symbol: "BAFL", price: 53.35, change: "-0.05%" },
-  { symbol: "BAHL", price: 86.89, change: "-1.65%" },
-  { symbol: "BIPL", price: 22.99, change: "-0.36%" },
-  { symbol: "BNWM", price: 25.78, change: "-0.21%" },
-]);
+import { useStore } from "vuex";
 
-const hovered = ref(null);
-const paused = ref(false);
+const store = useStore();
+const isAdmin = computed(() => store.state.isAdmin);
+const routeCurrrent = ref();
 
-const setHovered = (symbol: any) => {
-  hovered.value = symbol;
-  if (symbol) {
-    paused.value = true;
-  } else {
-    paused.value = false;
-  }
-};
-
+defineExpose({ isAdmin });
 useMeta({
   charset: "utf8",
   og: {
@@ -50,6 +42,8 @@ function trackPageView() {
     const { currentRoute, getRoutes } = router;
     const { path } = unref(currentRoute);
     const isValidPath = getRoutes().some((x) => x.path === path);
+    routeCurrrent.value = path;
+
     if (isValidPath) {
       pageview(path);
     }
@@ -73,12 +67,23 @@ watch(themeCls, (value) => {
       {{ `VueSeoFriendlySpa | ${content}` }}
     </template>
   </metainfo>
-  <Navbar />
+
   <RouterView v-slot="{ Component, route }">
-    <transition mode="out-in" :name="(route.meta.transition as string)">
-      <component :is="Component" />
-    </transition>
+    <template v-if="isAdmin">
+      <AdminLayout :route="route">
+        <!-- <transition mode="out-in" :name="(route.meta.transition as string)"> -->
+        <component :is="Component" />
+        <!-- </transition> -->
+      </AdminLayout>
+    </template>
+
+    <template v-else>
+      <Navbar />
+      <transition mode="out-in" :name="(route.meta.transition as string)">
+        <component :is="Component" />
+      </transition>
+      <BackToTop />
+      <AppFooter />
+    </template>
   </RouterView>
-  <BackToTop />
-  <AppFooter />
 </template>
