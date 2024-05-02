@@ -5,6 +5,25 @@
   z-index: 30;
 }
 
+.ribon {
+  content: "beta";
+  position: absolute;
+  z-index: 99;
+  width: 80px;
+  height: 25px;
+  background: #ee8e4a;
+  top: 7px;
+  left: -20px;
+  text-align: center;
+  font-size: 13px;
+  font-family: sans-serif;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #fff;
+  line-height: 27px;
+  transform: rotate(-45deg);
+}
+
 .navbar {
   width: 100%;
   height: $navbar-height;
@@ -16,23 +35,6 @@
   z-index: 30;
 
   // ribbon beta
-  :before {
-    content: "beta";
-    position: fixed;
-    width: 80px;
-    height: 25px;
-    background: #ee8e4a;
-    top: 7px;
-    left: -20px;
-    text-align: center;
-    font-size: 13px;
-    font-family: sans-serif;
-    text-transform: uppercase;
-    font-weight: bold;
-    color: #fff;
-    line-height: 27px;
-    transform: rotate(-45deg);
-  }
 
   @include reduceNavBarPadding {
     padding-left: 7rem;
@@ -55,6 +57,7 @@
     height: 100%;
 
     .brand-wrapper {
+      // background-color: #ee8e4a;
       display: flex;
       height: 100%;
       align-items: center;

@@ -6,6 +6,7 @@ import TopStockBar from "./TopStockBar.vue";
 
 <template>
   <div class="navbar-container">
+    <div class="ribon">beta</div>
     <TopStockBar />
 
     <nav class="navbar" role="navigation" aria-label="main navigation">
@@ -38,7 +39,7 @@ import TopStockBar from "./TopStockBar.vue";
 
           <div class="seperator" />
 
-          <div class="social-btn">
+          <div>
             <a target="_blank" href="https://facebook.com/dimitriaka.gr"
               ><font-awesome-icon
                 :icon="['fab', 'facebook']"

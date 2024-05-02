@@ -225,6 +225,7 @@ td {
               zoom="6"
               v-model:zoom="zoom"
               :center="[39.27, 23.81]"
+              style="z-index: 0"
             >
               <l-wms-tile-layer
                 url="https://maps.heigit.org/osm-wms/service"
@@ -271,16 +272,16 @@ td {
 
         <div class="column mb-5">
           <iframe
-            src="https://www.meteoblue.com/en/weather/maps/widget/basel_switzerland_2661604?windAnimation=0&windAnimation=1&gust=0&gust=1&satellite=0&satellite=1&cloudsAndPrecipitation=0&cloudsAndPrecipitation=1&temperature=0&temperature=1&sunshine=0&sunshine=1&extremeForecastIndex=0&extremeForecastIndex=1&geoloc=fixed&tempunit=C&windunit=km%252Fh&lengthunit=metric&zoom=5&autowidth=auto"
+            src="https://www.meteoblue.com/en/weather/maps/greece-%28historical-region%29_greece_12217205#coords=6.19/39.35/21.747&map=windAnimation~rainbow~auto~10%20m%20above%20gnd~none"
             frameborder="0"
             scrolling="NO"
             allowtransparency="true"
             sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox"
-            style="width: 100%; height: 720px"
+            style="width: 100%; height: 400px"
           ></iframe>
           <div>
             <!-- DO NOT REMOVE THIS LINK --><a
-              href="https://www.meteoblue.com/en/weather/maps/basel_switzerland_2661604?utm_source=weather_widget&utm_medium=linkus&utm_content=map&utm_campaign=Weather%2BWidget"
+              href="https://www.meteoblue.com/en/weather/maps/greece?utm_source=weather_widget&utm_medium=linkus&utm_content=map&utm_campaign=Weather%2BWidget"
               target="_blank"
               rel="noopener"
               >meteoblue</a
